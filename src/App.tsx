@@ -2,15 +2,27 @@ import type { CSSProperties } from "react";
 import "./globals.css";
 import "@/site/fonts";
 import "@/site/site.css";
-import { theme } from "@/site/site";
+import { theme, meta } from "@/site/site";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 const Home = lazy(() => import("./page"));
 const Patterns = lazy(() => import("./patterns/page"));
 
 export default function App() {
   const t = theme;
+
+  useEffect(() => {
+    document.title = meta.title || "3D Mobile";
+    let desc = document.querySelector('meta[name="description"]');
+    if (!desc) {
+      desc = document.createElement("meta");
+      desc.setAttribute("name", "description");
+      document.head.appendChild(desc);
+    }
+    desc.setAttribute("content", meta.description || "");
+  }, []);
+
   const isDark = (hex: string) => {
     const n = parseInt(hex.replace("#", "").slice(0, 6), 16);
     return ((n >> 16) & 255) * 0.299 + ((n >> 8) & 255) * 0.587 + (n & 255) * 0.114 < 140;

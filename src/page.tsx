@@ -1,5 +1,5 @@
 import Loader from "@/components/engine/Loader";
-import Cursor from "@/components/engine/Cursor";
+
 import SmoothScroll from "@/components/engine/SmoothScroll";
 import Animations from "@/components/engine/Animations";
 import RecordMode from "@/components/engine/RecordMode";
@@ -14,7 +14,7 @@ export default function Home() {
       <SmoothScroll />
       <Animations />
       <RecordMode speed={meta.record?.speed} duration={meta.record?.duration} delay={meta.record?.delay} />
-      {meta.cursor !== false && <Cursor />}
+
       <SitePage />
     </>
   );

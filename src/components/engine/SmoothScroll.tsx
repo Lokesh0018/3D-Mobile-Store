@@ -2,6 +2,7 @@
 
 import Lenis from "lenis";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { gsap, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
 import { loading, onSiteReady } from "@/lib/loading";
 
@@ -50,6 +51,14 @@ export default function SmoothScroll() {
       delete window.__lenis;
     };
   }, []);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
+    }
+  }, [location.pathname]);
 
   return null;
 }

@@ -2,7 +2,7 @@
 import SmoothScroll from "@/components/engine/SmoothScroll";
 import Animations from "@/components/engine/Animations";
 import Loader from "@/components/engine/Loader";
-import Cursor from "@/components/engine/Cursor";
+
 import NavPill from "@/components/patterns/NavPill";
 import Ticker from "@/components/patterns/Ticker";
 import VariantHero from "@/components/patterns/VariantHero";
@@ -61,7 +61,7 @@ export default function Patterns() {
       <Loader text="PATTERNS" enabled />
       <SmoothScroll />
       <Animations />
-      <Cursor />
+
       <PageGlow />
       <NavPill logo="Brand" links={[{ label: "Home", href: "#" }, { label: "Shop", href: "#" }, { label: "About", href: "#" }, { label: "Contact", href: "#" }]} cta={{ label: "Cart (2)", href: "#" }} />
 
