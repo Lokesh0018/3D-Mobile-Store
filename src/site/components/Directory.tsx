@@ -21,24 +21,24 @@ export default function Directory() {
               <a
                 key={r.no}
                 href={`#${r.zone}`}
-                data-cursor="Walk in"
-                className="group relative grid grid-cols-[auto_1fr_auto] items-center gap-x-5 gap-y-2 overflow-hidden border-b border-line py-7 md:grid-cols-[80px_1fr_200px_220px] md:gap-x-8 md:py-9"
+                className="group relative grid grid-cols-[auto_1fr_auto] items-center gap-x-5 gap-y-2 overflow-hidden border-b border-line py-7 transition-colors duration-700 md:grid-cols-[80px_1fr_200px_220px] md:gap-x-8 md:py-9 group-hover:text-[var(--hover-text)]"
+                style={{ "--hover-text": z["--text"], "--hover-muted": z["--muted"] } as React.CSSProperties}
               >
                 {/* light spill on hover */}
                 <span
                   className="pointer-events-none absolute inset-0 origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(.65,0,.35,1)] group-hover:scale-x-100"
                   style={{ background: `linear-gradient(90deg, ${z["--bg"]}, transparent)` }}
                 />
-                <span className="mono relative text-[13px] text-muted">{r.no}</span>
+                <span className="mono relative text-[13px] text-muted transition-colors duration-700 group-hover:text-[var(--hover-muted)]">{r.no}</span>
                 <span className="relative flex flex-col gap-2">
-                  <span className="font-display text-[clamp(24px,3vw,48px)]">{r.title}</span>
-                  <span className="text-[14px] text-muted">{r.note}</span>
+                  <span className="font-display text-[clamp(24px,3vw,48px)] transition-colors duration-700 group-hover:text-[var(--hover-text)]">{r.title}</span>
+                  <span className="text-[14px] text-muted transition-colors duration-700 group-hover:text-[var(--hover-muted)]">{r.note}</span>
                 </span>
                 <span className="mono relative col-span-3 flex items-center gap-3 text-[12px] md:col-span-1">
                   <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: z["--glow"], boxShadow: `0 0 16px 2px ${z["--glow"]}` }} />
                   <span className="flex flex-wrap gap-x-2 md:flex-col md:gap-1">
-                    <span className="whitespace-nowrap text-fg">{r.light} light</span>
-                    <span className="whitespace-nowrap text-muted">{r.count}</span>
+                    <span className="whitespace-nowrap transition-colors duration-700 group-hover:text-[var(--hover-text)]">{r.light} light</span>
+                    <span className="whitespace-nowrap text-muted transition-colors duration-700 group-hover:text-[var(--hover-muted)]">{r.count}</span>
                   </span>
                 </span>
                 <span className="relative col-start-3 row-start-1 flex h-[72px] w-[110px] items-center justify-end md:col-start-4 md:h-[110px] md:w-auto">

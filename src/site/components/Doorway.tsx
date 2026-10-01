@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { zoneById, type ZoneId } from "../zones";
 
@@ -44,6 +44,7 @@ export default function Doorway({
   const img = useRef<HTMLImageElement>(null);
   const view = useRef<HTMLDivElement>(null);
   const shadeEl = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -99,7 +100,15 @@ export default function Doorway({
         <div ref={clip} className="absolute inset-0 overflow-hidden">
           {/* the photo is sized like "cover" but as a real box, so the closed doorway can frame any part of it */}
           <div ref={view} className="absolute inset-0 flex items-center justify-center will-change-transform">
-            <img ref={img} src={photo} alt="" className="max-w-none shrink-0" style={{ width: `max(100%, calc(100vh * ${PHOTO_AR}))`, aspectRatio: PHOTO_AR }} />
+            <div className={`absolute inset-0 transition-opacity duration-[1.5s] ${loaded ? 'opacity-0' : 'opacity-100 animate-pulse bg-line/20'}`} />
+            <img 
+              ref={img} 
+              src={photo} 
+              alt="" 
+              onLoad={() => setLoaded(true)}
+              className={`max-w-none shrink-0 transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`} 
+              style={{ width: `max(100%, calc(100vh * ${PHOTO_AR}))`, aspectRatio: PHOTO_AR }} 
+            />
           </div>
           {shade && <div ref={shadeEl} className="door-shade absolute inset-0" style={{ background: shade }} />}
         </div>

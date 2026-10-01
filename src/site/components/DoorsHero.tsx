@@ -91,6 +91,8 @@ export default function DoorsHero() {
     <section ref={outer} id="entrance" data-zone="entrance" data-record-time="0" data-record-hold="0.8" data-record-label="Hero" className="relative" style={{ height: `${length * 100}vh` }}>
       <div data-record-time="4.2" data-record-align="bottom" data-record-label="Hero: inside" className="absolute bottom-0 left-0 h-px w-px" />
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0c0f14] text-white">
+        {/* Poster image that acts as a loading state before the canvas draws frames */}
+        <img src="/frames/circuit-doors/frame_0001.webp" alt="Circuit Square Entrance" className="absolute inset-0 h-full w-full object-cover blur-sm" />
         <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
 
         {/* the store name on the video's blank sign */}
