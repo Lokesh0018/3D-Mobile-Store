@@ -64,7 +64,20 @@ export default function ProductGrid({
                 <img src={p.image} alt={p.name} className="absolute -top-14 left-1/2 h-36 w-auto -translate-x-1/2 object-contain drop-shadow-[0_18px_18px_rgba(0,0,0,.28)] transition-transform duration-700 group-hover:-translate-y-2 group-hover:rotate-[-4deg] group-hover:scale-105" />
                 <p className="text-lg font-semibold">{p.price}</p>
                 <p className="mt-1 text-xs text-neutral-500">{p.name}</p>
-                <span className="mt-5 rounded-full bg-neutral-900 px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition-colors group-hover:bg-accent group-hover:text-accent-fg">{cta}</span>
+                <button 
+                  className="mt-5 rounded-full bg-neutral-900 px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition-colors group-hover:bg-accent group-hover:text-accent-fg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const img = e.currentTarget.closest('a')?.querySelector('img');
+                    if (img) {
+                      import('../../site/cartStore').then(({ cartStore }) => {
+                        cartStore.add(img.src, img.getBoundingClientRect(), p.name, p.price);
+                      });
+                    }
+                  }}
+                >
+                  {cta}
+                </button>
               </a>
             ) : (
               <a key={i} href={p.href ?? "#"} className="group block">
@@ -74,9 +87,20 @@ export default function ProductGrid({
                   <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-900 transition-colors hover:text-red-500">
                     <Heart />
                   </span>
-                  <span className="absolute inset-x-3 bottom-3 translate-y-3 rounded-[var(--radius)] bg-accent py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-accent-fg opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                  <button 
+                    className="absolute inset-x-3 bottom-3 translate-y-3 rounded-[var(--radius)] bg-accent py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-accent-fg opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const img = e.currentTarget.closest('a')?.querySelector('img');
+                      if (img) {
+                        import('../../site/cartStore').then(({ cartStore }) => {
+                          cartStore.add(img.src, img.getBoundingClientRect(), p.name, p.price);
+                        });
+                      }
+                    }}
+                  >
                     {cta}
-                  </span>
+                  </button>
                 </div>
                 <p className="mt-4 text-sm font-medium">{p.name}</p>
                 {p.note && <p className="mt-0.5 text-xs text-muted">{p.note}</p>}

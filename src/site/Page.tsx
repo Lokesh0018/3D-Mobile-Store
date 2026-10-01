@@ -13,6 +13,8 @@ import FloorStats from "./components/FloorStats";
 import ReviewWall from "./components/ReviewWall";
 import VisitStore from "./components/VisitStore";
 import CircuitFooter from "./components/CircuitFooter";
+import CartAnimation from "./components/CartAnimation";
+import CartSidebar from "./components/CartSidebar";
 import { faviconSvg } from "./components/Logo";
 import { meta } from "./site";
 
@@ -30,6 +32,8 @@ export default function Page() {
         }}
       />
       <link rel="icon" type="image/svg+xml" href={ICON} />
+      <CartAnimation />
+      <CartSidebar />
       <CircuitLoader name={meta.loaderText ?? meta.name} />
       <RoomLights />
       <TopBar />

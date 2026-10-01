@@ -1,5 +1,6 @@
 import Logo from "./Logo";
 import { store } from "../content";
+import CartIcon from "./CartIcon";
 
 /** Slim top bar: mark + name · open-now line · Visit store. Its colours follow the room you are in. */
 export default function TopBar() {
@@ -16,9 +17,12 @@ export default function TopBar() {
           <span className="opacity-40">/</span>
           <span>{store.area}</span>
         </p>
-        <a href="#visit" className="btn btn-solid !py-2.5 !text-[12px]" data-cursor="Visit">
-          Visit store
-        </a>
+        <div className="flex items-center gap-4">
+          <a href="#visit" className="btn btn-solid !py-2.5 !text-[12px]" data-cursor="Visit">
+            Visit store
+          </a>
+          <CartIcon />
+        </div>
       </div>
     </header>
   );

@@ -113,9 +113,19 @@ export default function RoomComputers() {
               <span className="tag">
                 {it.price} <small>or {it.emi}</small>
               </span>
-              <a href="#" className="btn btn-solid !py-2.5">
+              <button 
+                className="btn btn-solid !py-2.5"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (shot.current) {
+                    import('../cartStore').then(({ cartStore }) => {
+                      cartStore.add(shot.current!.src, shot.current!.getBoundingClientRect(), it.name, it.price);
+                    });
+                  }
+                }}
+              >
                 Add to cart
-              </a>
+              </button>
             </div>
           </div>
         </div>

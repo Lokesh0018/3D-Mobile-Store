@@ -19,23 +19,6 @@ export default function TopPicks() {
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
-    // Show all 8 first: the filters only start stepping FIRST ms after the grid comes on screen
-    let t: ReturnType<typeof setInterval> | undefined;
-    let wait: ReturnType<typeof setTimeout> | undefined;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        clearTimeout(wait);
-        clearInterval(t);
-        if (!e.isIntersecting) return;
-        setF(0);
-        wait = setTimeout(() => {
-          setF(1);
-          t = setInterval(() => setF((c) => (c + 1) % picks.filters.length), INTERVAL);
-        }, FIRST);
-      },
-      { threshold: 0.35 },
-    );
-    io.observe(ref.current!);
     // ?record=1 on a phone: during the hold, glide the row so all 8 cards pass the camera
     const el = ref.current!;
     const onHold = (e: Event) => {
@@ -45,9 +28,6 @@ export default function TopPicks() {
     };
     el.addEventListener("record:hold", onHold);
     return () => {
-      clearInterval(t);
-      clearTimeout(wait);
-      io.disconnect();
       el.removeEventListener("record:hold", onHold);
     };
   }, []);
@@ -92,9 +72,10 @@ export default function TopPicks() {
               <a
                 key={p.name}
                 href="#"
+                onClick={(e) => e.preventDefault()}
                 data-cursor="Add"
-                className="group relative flex w-[72vw] max-w-[300px] shrink-0 flex-col border border-line bg-surface p-4 md:p-3.5 transition-[opacity,filter,transform] duration-700 md:w-auto md:max-w-none"
-                style={{ opacity: on ? 1 : 0.28, filter: on ? "none" : "grayscale(1)", transform: on ? "none" : "scale(0.98)" }}
+                className="group relative flex w-[72vw] max-w-[300px] shrink-0 flex-col border border-line bg-surface p-4 md:p-3.5 transition-[opacity,transform] duration-700 md:w-auto md:max-w-none"
+                style={{ opacity: on ? 1 : 0.28, transform: on ? "none" : "scale(0.98)" }}
               >
                 <div className="relative aspect-[4/3] bg-bg md:aspect-[16/10]">
                   <img src={p.image} alt={p.name} className="absolute inset-0 h-full w-full object-contain p-5 transition-transform duration-700 ease-out group-hover:scale-[1.06]" />
@@ -109,9 +90,21 @@ export default function TopPicks() {
                     </span>
                     <span className="mono text-[12px] text-muted">{p.emi}</span>
                   </div>
-                  <span className="grid h-9 w-9 place-items-center rounded-[3px] bg-fg text-bg transition-colors duration-300 group-hover:bg-accent group-hover:text-accent-fg" aria-label="Add to cart">
+                  <button 
+                    className="grid h-9 w-9 place-items-center rounded-[3px] bg-fg text-bg transition-colors duration-300 hover:bg-accent hover:text-accent-fg" 
+                    aria-label="Add to cart"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const img = e.currentTarget.closest('a')?.querySelector('img');
+                      if (img) {
+                        import('../cartStore').then(({ cartStore }) => {
+                          cartStore.add(img.src, img.getBoundingClientRect(), p.name, p.price);
+                        });
+                      }
+                    }}
+                  >
                     +
-                  </span>
+                  </button>
                 </div>
               </a>
             );
