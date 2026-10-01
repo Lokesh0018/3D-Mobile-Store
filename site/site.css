@@ -1,0 +1,226 @@
+/* Circuit Square: brand styles. Colours come from the theme + site/zones.ts (RoomLights fades them per room). */
+
+:root {
+  --glow: #ff5a1f;
+  --glow-text: #0c0f14;
+  --ink: #0c0f14;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Clean showroom: no film grain */
+.grain::after {
+  display: none;
+}
+
+body {
+  font-weight: 450;
+}
+
+.font-display {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "zero" 0;
+}
+
+/* Small shelf-tag label */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--glow);
+  box-shadow: 0 0 12px var(--glow);
+}
+
+/* Buttons: sharp, bold, not spaced out */
+.btn {
+  padding: 0.95rem 1.4rem;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  border-radius: 4px;
+}
+.btn-outline {
+  border-color: currentColor;
+  color: inherit;
+}
+.btn-outline::before {
+  background: var(--text);
+}
+.btn-outline:hover {
+  color: var(--bg);
+}
+
+/* Shelf-tag price label */
+.tag {
+  font-family: var(--font-mono);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 10px 5px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.tag small {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.hairline {
+  border-color: var(--line);
+}
+
+/* Colour transitions for things that are not driven by GSAP */
+.zone-fade {
+  transition: background-color 0.9s ease, color 0.9s ease, border-color 0.9s ease;
+}
+
+/* Reviews marquee */
+.review-track {
+  animation: review-slide 60s linear infinite;
+}
+.review-track.reverse {
+  animation-direction: reverse;
+}
+@keyframes review-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Blinking "open" dot */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: live 2s ease-out infinite;
+}
+@keyframes live {
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+html.is-static .review-track,
+html.is-static .live-dot,
+html.is-static .ticker-track {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .review-track,
+  .live-dot {
+    animation: none;
+  }
+}
+
+/* ?static=1: the doorway is already open, so the walk-in space can be short */
+html.is-static .door-walk {
+  height: 55vh;
+}
+
+/* Room 01: active model row fills like a loading bar */
+.spot-bar {
+  transform-origin: left;
+  animation: spot-fill linear forwards;
+}
+@keyframes spot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+html.is-static .spot-bar {
+  animation: none;
+}
+
+/* ?static=1: the phone shelf wraps instead of sliding */
+html.is-static .shelf-pin {
+  position: relative;
+  height: auto;
+}
+html.is-static .shelf-track {
+  width: auto;
+  flex-wrap: wrap;
+  row-gap: 32px;
+}
+
+/* ?static=1: the hero is just its first frame, no scroll length needed */
+html.is-static #entrance {
+  height: 100vh !important;
+}
+
+/* Rooms: a soft pool of the room colour behind a text block, so the photo can stay clear everywhere else */
+.text-backdrop {
+  position: relative;
+  isolation: isolate;
+}
+.text-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -18% -14%;
+  z-index: -1;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--bg) 92%, transparent) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 55%, transparent 100%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* Room 03 neon bento: the beam + spotlight come from app/globals.css (.beam, BeamBento pattern) */
+.beam .spotlight {
+  background: radial-gradient(420px circle at var(--mx, 30%) var(--my, 30%), rgba(181, 108, 255, 0.32), transparent 62%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.beam.is-on .spotlight {
+  opacity: 1;
+}
+html.is-static .beam::before {
+  animation: none;
+  background: #b56cff;
+}
+
+/* No flash before the loader: page content stays hidden until the loader's doors start to open */
+html.cs-site:not(.cs-ready) main,
+html.cs-site:not(.cs-ready) body > header,
+html.cs-site:not(.cs-ready) body > footer {
+  visibility: hidden;
+}
+
+/* The offer ticker waits for the Deals section (the dock says when, via RoomLights) */
+.offer-ticker {
+  transition: opacity 0.6s ease;
+}
+html[data-dock="entrance"] .offer-ticker,
+html[data-dock="computers"] .offer-ticker,
+html[data-dock="phones"] .offer-ticker,
+html[data-dock="neon"] .offer-ticker {
+  opacity: 0;
+}
